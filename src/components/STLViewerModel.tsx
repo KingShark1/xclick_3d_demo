@@ -4,12 +4,19 @@ import React, { useEffect, useRef } from "react";
 import { useLoader, useThree } from "@react-three/fiber";
 // @ts-ignore
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
+import { Center } from "@react-three/drei";
 
 interface STLViewerModelProps {
   url: string;
+  wireframeChecked?: boolean;
+  color?: string;
 }
 
-export const STLViewerModel: React.FC<STLViewerModelProps> = ({ url }) => {
+export const STLViewerModel: React.FC<STLViewerModelProps> = ({
+  url,
+  wireframeChecked,
+  color,
+}) => {
   const geom = useLoader(STLLoader, url);
 
   const ref = useRef<THREE.Mesh>(null);
@@ -19,13 +26,13 @@ export const STLViewerModel: React.FC<STLViewerModelProps> = ({ url }) => {
   });
 
   return (
-    <>
+    <Center>
       <mesh ref={ref}>
         <primitive object={geom} attach="geometry" />
-        <meshStandardMaterial color={"orange"} />
+        <meshStandardMaterial wireframe={wireframeChecked} color={color} />
       </mesh>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-    </>
+    </Center>
   );
 };
